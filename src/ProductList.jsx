@@ -5,7 +5,7 @@ import CartItem from './CartItem';
 
 import { addItem } from './CartSlice'
 
-function ProductList() {
+function ProductList(props) {
     const dispatch = useDispatch();
 
     const cart = useSelector(state => state.cart.items);
@@ -268,11 +268,19 @@ function ProductList() {
         return cart.reduce((total, item) => total + item.quantity, 0);
     }
 
+    const alreadyInCart = (itemName) => {
+        return cart.some((item) => item.name === itemName)
+    }
+
     return (
         <div>
             <div className="navbar" style={styleObj}>
                 <div className="tag">
-                    <div className="luxury">
+                    <div 
+                        style={{cursor: 'pointer'}} 
+                        className="luxury"
+                        onClick={props.tolanding}
+                    >
                         <img src="https://cdn.pixabay.com/photo/2020/08/05/13/12/eco-5465432_1280.png" alt="" />
                         <a href="/" style={{ textDecoration: 'none' }}>
                             <div>
@@ -288,7 +296,15 @@ function ProductList() {
                     <div> 
                         <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
                             <h1 className='cart'>
-                                <label style={{zIndex:1,position:"fixed",fontSize:"1.5rem",cursor:"pointer"}}>{totalItems()}</label>
+                                <label style={{
+                                    zIndex:1,
+                                    position:"absolute",
+                                    fontSize:"1.5rem",
+                                    cursor:"pointer",
+                                    top: '20px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)'
+                                }}>{totalItems()}</label>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="68" width="68">
                                     <rect width="156" height="156" fill="none"></rect>
                                     <circle cx="80" cy="216" r="12"></circle>
@@ -304,19 +320,21 @@ function ProductList() {
                 <div className="product-grid">
                     {plantsArray.length > 0 && plantsArray.map((category, index) => (
                         <div key={index}>
-                            <h1>
+                            <h1 className='mainCategoryDiv'>
                                 <div>{category.category}</div>
                             </h1>
                             <div className='product-list'>
                                 {category.plants.map((plant, plantIndex) => (
                                     <div className='product-card' key={plantIndex}>
-                                        <img className="product-image" src={plant.image} alt={plant.name} />
                                         <div className="product-title">{plant.name}</div>
-                                        {/*Similarly like the above plant.name show other details like description and cost*/}
+                                        <img className="product-image" src={plant.image} alt={plant.name} />
+                                        <p className='product-price'>{plant.cost}</p>
+                                        <div className='product-description'>{plant.description}</div>
                                         <button 
-                                            className="product-button" 
+                                            className="product-button"
+                                            disabled={alreadyInCart(plant.name) ? true : false}
                                             onClick={() => handleAddToCart(plant)}
-                                        >Add to Cart</button>
+                                        >{ alreadyInCart(plant.name) ? 'Added to Cart' : 'Add to Cart' }</button>
                                     </div>
                                 ))}
                             </div>
