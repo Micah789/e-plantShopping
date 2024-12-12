@@ -257,11 +257,13 @@ function ProductList(props) {
     };
 
     const handleAddToCart = (product) => {
-        dispatch(addItem(product));
-        setAddedToCart((prevState) => ({
-           ...prevState,
-           [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-        }));
+        if (!alreadyInCart(product.name)) {
+            dispatch(addItem(product));
+            setAddedToCart((prevState) => ({
+               ...prevState,
+               [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
+            }));
+        }
     };
 
     const totalItems = () => {
@@ -331,8 +333,7 @@ function ProductList(props) {
                                         <p className='product-price'>{plant.cost}</p>
                                         <div className='product-description'>{plant.description}</div>
                                         <button 
-                                            className="product-button"
-                                            disabled={alreadyInCart(plant.name) ? true : false}
+                                            className={`product-button ${alreadyInCart(plant.name) ? 'added-to-cart' : ''}`}
                                             onClick={() => handleAddToCart(plant)}
                                         >{ alreadyInCart(plant.name) ? 'Added to Cart' : 'Add to Cart' }</button>
                                     </div>

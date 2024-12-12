@@ -9,18 +9,11 @@ const CartItem = ({ onContinueShopping }) => {
 
     // Calculate total amount for all products in the cart
     const calculateTotalAmount = () => {
-        let total_price = 0
-        
-        cart.forEach((item) => {
-            const price = parseItemPrice(item.cost)
-            total_price += (price * item.quantity)
-        })
-
-        return total_price
+        return cart.reduce((total, item) => total + Number(item.cost.substring(1)) * item.quantity, 0);
     };
 
     const handleCheckoutShopping = (e) => {
-        alert('Functionality to be added for future reference');
+        alert('Coming Soon! Functionality to be added for future reference');
     };
 
     const handleContinueShopping = (e) => {
@@ -43,15 +36,9 @@ const CartItem = ({ onContinueShopping }) => {
         dispatch(removeItem(item))
     };
 
-    const parseItemPrice = (price) => {
-        return parseInt(price.replace("$", ''))
-    }
-
     // Calculate total cost based on quantity for an item
     const calculateTotalCost = (item) => {
-        // convert cost from string to int
-        const price = parseItemPrice(item.cost)
-        return price * item.quantity
+        return Number(item.cost.substring(1)) * item.quantity;
     };
 
     return (

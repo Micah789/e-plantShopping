@@ -231,13 +231,6 @@ body {
     transition-duration: 0.4s;
     cursor: pointer;
   }
-
-  .product-button:disabled {
-    background-color: grey;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-  
   
   .product-button:hover {
     background-color: #45a049;
@@ -245,6 +238,7 @@ body {
   
   .product-button.added-to-cart {
     background-color: grey; /* Grey when product is added */
+    cursor: not-allowed;
   }
   @media (max-width: 1200px) {
     .product-card {
